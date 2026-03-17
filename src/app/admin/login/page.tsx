@@ -14,7 +14,8 @@ export default function LoginPage() {
     // Super simple auth: check against a hardcoded value or env var
     // For this demo, let's use 'admin123'
     if (password === 'admin123') {
-      document.cookie = 'admin_auth=true; path=/';
+      // Definindo o cookie com expiração de 7 dias e SameSite=Lax para segurança
+      document.cookie = 'admin_auth=true; path=/; max-age=604800; SameSite=Lax';
       router.push('/admin');
     } else {
       setError('Senha incorreta');
