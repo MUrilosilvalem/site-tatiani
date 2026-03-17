@@ -1,0 +1,48 @@
+.page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.card {
+  background: var(--surface);
+  padding: var(--space-xl);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-medium);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+}
+
+.card h1 {
+  margin-bottom: var(--space-lg);
+  font-size: 1.5rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.input {
+  padding: 0.75rem;
+  border: 1px solid var(--secondary);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+  text-align: center;
+}
+
+.btn {
+  background: var(--color-pink-medium);
+  color: white;
+  padding: 0.75rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.error {
+  color: #ff4d4d;
+  font-size: 0.875rem;
+}

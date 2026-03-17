@@ -1,0 +1,43 @@
+export interface Book {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  imageUrl: string;
+  checkoutUrl: string;
+  slug: string;
+  category: string;
+}
+
+export const books: Book[] = [
+  {
+    id: '1',
+    title: 'O Guia da Mãe de Primeira Viagem',
+    description: 'Tudo o que você precisa saber para os primeiros meses do seu bebê, com dicas práticas e acolhedoras.',
+    price: 47.90,
+    imageUrl: 'https://images.unsplash.com/photo-1544176273-09887199c30f?q=80&w=600&auto=format&fit=crop',
+    checkoutUrl: 'https://hotmart.com/exemplo1',
+    slug: 'guia-mae-primeira-viagem',
+    category: 'E-book'
+  },
+  {
+    id: '2',
+    title: 'Alimentação Afetiva e Introdução Alimentar',
+    description: 'Como tornar o momento das refeições prazeroso e nutritivo para o seu filho desde o primeiro dia.',
+    price: 67.00,
+    imageUrl: 'https://images.unsplash.com/photo-1596464716127-f2a82984de30?q=80&w=600&auto=format&fit=crop',
+    checkoutUrl: 'https://hotmart.com/exemplo2',
+    slug: 'alimentacao-afetiva',
+    category: 'E-book'
+  },
+  {
+    id: '3',
+    title: 'Sono Infantil: O Guia Definitivo',
+    description: 'Estratégias gentis para ajudar seu bebê a dormir melhor e garantir o descanso de toda a família.',
+    price: 89.90,
+    imageUrl: 'https://images.unsplash.com/photo-1515488764276-beab7607c1e6?q=80&w=600&auto=format&fit=crop',
+    checkoutUrl: 'https://hotmart.com/exemplo3',
+    slug: 'sono-infantil-guia',
+    category: 'Curso'
+  }
+];

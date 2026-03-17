@@ -1,0 +1,50 @@
+:root {
+  /* Colors - Soft Maternal Palette */
+  --color-pink-soft: hsl(340, 70%, 92%);
+  --color-pink-medium: hsl(340, 60%, 85%);
+  --color-lila-soft: hsl(270, 40%, 92%);
+  --color-cream: hsl(30, 50%, 97%);
+  --color-white: hsl(0, 0%, 100%);
+  --color-text-main: hsl(0, 0%, 25%);
+  --color-text-light: hsl(0, 0%, 45%);
+  
+  /* Semantic Colors */
+  --primary: var(--color-pink-soft);
+  --primary-hover: var(--color-pink-medium);
+  --secondary: var(--color-lila-soft);
+  --background: var(--color-cream);
+  --surface: var(--color-white);
+  --text: var(--color-text-main);
+  --text-muted: var(--color-text-light);
+  
+  /* Spacing */
+  --space-xs: 0.5rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2rem;
+  --space-xl: 3rem;
+  
+  /* Border Radius */
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-full: 9999px;
+  
+  /* Shadows */
+  --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.05);
+  --shadow-medium: 0 8px 30px rgba(0, 0, 0, 0.08);
+  
+  /* Typography */
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Subtle adjustments for dark mode if needed, maintaining the soft feel */
+    --background: hsl(30, 10%, 10%);
+    --surface: hsl(30, 5%, 15%);
+    --text: hsl(0, 0%, 90%);
+    --text-muted: hsl(0, 0%, 70%);
+    --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+}

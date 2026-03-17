@@ -1,0 +1,106 @@
+.page {
+  padding: var(--space-xl) 0;
+}
+
+.title {
+  margin-bottom: var(--space-xl);
+  text-align: center;
+}
+
+.formSection {
+  background: var(--surface);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-medium);
+  margin-bottom: var(--space-xl);
+}
+
+.formSection h2 {
+  margin-bottom: var(--space-md);
+}
+
+.form {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.field label {
+  font-weight: 600;
+  font-size: 0.875rem;
+}
+
+.field input, .field textarea, .field select {
+  padding: 0.75rem;
+  border: 1px solid var(--secondary);
+  border-radius: var(--radius-sm);
+  font-family: inherit;
+}
+
+.imageInputGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.fileInput {
+  font-size: 0.75rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+}
+
+.actions {
+  display: flex;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+}
+
+.saveBtn {
+  background: var(--color-pink-medium);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+}
+
+.cancelBtn {
+  background: var(--text-muted);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: var(--radius-sm);
+}
+
+.listSection {
+  background: var(--surface);
+  padding: var(--space-lg);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-medium);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: var(--space-md);
+}
+
+.table th, .table td {
+  text-align: left;
+  padding: 1rem;
+  border-bottom: 1px solid var(--background);
+}
+
+.editBtn {
+  color: var(--color-pink-medium);
+  font-weight: 600;
+  background: none;
+  padding: 0;
+}
