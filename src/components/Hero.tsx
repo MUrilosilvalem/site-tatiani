@@ -1,17 +1,25 @@
 import styles from './Hero.module.css';
 import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
 
-export default function Hero() {
+export default async function Hero() {
+  const content = await prisma.pageContent.findMany({
+    where: {
+      key: { in: ['home.hero.title', 'home.hero.subtitle'] }
+    }
+  });
+
+  const getVal = (key: string, def: string) => content.find(c => c.key === key)?.value || def;
+
+  const title = getVal('home.hero.title', 'Conectando Mães ao Cuidado e ao Conhecimento');
+  const subtitle = getVal('home.hero.subtitle', 'Explore nossa curadoria de livros e infoprodutos criados para acolher e guiar você em cada etapa da maternidade.');
+
   return (
     <section className={styles.hero}>
       <div className={`container ${styles.container}`}>
         <div className={styles.content}>
-          <h1 className={styles.title}>
-            Conectando Mães ao <span>Cuidado</span> e ao <span>Conhecimento</span>
-          </h1>
-          <p className={styles.subtitle}>
-            Explore nossa curadoria de livros e infoprodutos criados para acolher e guiar você em cada etapa da maternidade.
-          </p>
+          <h1 className={styles.title} dangerouslySetInnerHTML={{ __html: title.replace('<span>', '<span class="' + styles.titleHighlight + '">').replace('</span>', '</span>') }} />
+          <p className={styles.subtitle}>{subtitle}</p>
           <div className={styles.actions}>
             <Link href="/livros" className={styles.primaryBtn}>
               Ver Todos os Livros

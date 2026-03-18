@@ -2,9 +2,58 @@
   padding: var(--space-xl) 0;
 }
 
-.title {
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: var(--space-xl);
-  text-align: center;
+}
+
+.title {
+  margin-bottom: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: var(--space-md);
+  margin-bottom: var(--space-lg);
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 2px;
+}
+
+.tab {
+  padding: 0.75rem 1.5rem;
+  background: none;
+  border: none;
+  font-weight: 600;
+  color: #6b7280;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -4px;
+}
+
+.tab:hover {
+  color: var(--color-pink-medium);
+}
+
+.tab.activeTab {
+  color: var(--color-pink-medium);
+  border-bottom-color: var(--color-pink-medium);
+}
+
+.logoutBtn {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.logoutBtn:hover {
+  background: #e5e7eb;
 }
 
 .formSection {
@@ -44,12 +93,49 @@
 
 .imageInputGroup {
   display: flex;
-  flex-direction: column;
+  align-items: center;
   gap: 0.5rem;
+}
+
+.imageInputGroup input[type="text"] {
+  flex: 1;
 }
 
 .fileInput {
   font-size: 0.75rem;
+  max-width: 200px;
+}
+
+.removeBtn {
+  background: #fee2e2;
+  color: #ef4444;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-sm);
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.removeBtn:hover {
+  background: #fecaca;
+}
+
+.addBtn {
+  background: #ecfdf5;
+  color: #10b981;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-top: 5px;
+  border: 1px dashed #10b981;
+}
+
+.addBtn:hover {
+  background: #d1fae5;
 }
 
 .row {
@@ -103,4 +189,46 @@
   font-weight: 600;
   background: none;
   padding: 0;
+}
+
+.deleteBtn {
+  color: #ef4444;
+  font-weight: 600;
+  background: none;
+  padding: 0;
+  margin-left: 1rem;
+}
+
+.contentList {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.contentItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.contentItem label {
+  font-weight: 600;
+  color: var(--text-color);
+  font-size: 0.875rem;
+}
+
+.contentItem input, .contentItem textarea {
+  width: 100%;
+}
+
+.saveContentBtn {
+  align-self: flex-start;
+  margin-top: 0.5rem;
+  background: var(--color-pink-medium);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+  font-size: 0.875rem;
 }

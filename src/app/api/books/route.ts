@@ -1,65 +1,87 @@
 import { NextRequest, NextResponse } from 'next/server';
-import fs from 'fs/promises';
-import path from 'path';
-import { Book } from '@/data/books';
-
-const DATA_PATH = path.join(process.cwd(), 'src/data/books.json');
-
-async function getBooks(): Promise<Book[]> {
-  const data = await fs.readFile(DATA_PATH, 'utf-8');
-  return JSON.parse(data);
-}
-
-async function saveBooks(books: Book[]): Promise<void> {
-  await fs.writeFile(DATA_PATH, JSON.stringify(books, null, 2));
-}
+import { prisma } from '@/lib/prisma';
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export async function GET() {
   try {
-    const books = await getBooks();
-    return NextResponse.json(books);
+    const books = await prisma.book.findMany({
+      include: { images: true },
+      orderBy: { createdAt: 'desc' }
+    });
+    
+    // Converte para o formato esperado pelo frontend se necessário
+    const formattedBooks = books.map(book => ({
+      ...book,
+      imageUrl: book.images[0]?.url || '', // Fallback para a primeira imagem
+    }));
+
+    return NextResponse.json(formattedBooks);
   } catch (error) {
+    console.error('Fetch books error:', error);
     return NextResponse.json({ error: 'Failed to fetch books' }, { status: 500 });
   }
 }
 
-import { revalidatePath } from 'next/cache';
-
 export async function POST(req: NextRequest) {
   try {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const body = await req.json();
-    const books = await getBooks();
-    
-    if (body.id) {
+    const { id, title, description, price, imageUrls, checkoutUrl, category, isFeatured } = body;
+
+    const slug = title.toLowerCase()
+      .normalize('NFD')
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/ /g, '-')
+      .replace(/[^\w-]+/g, '');
+
+    if (id) {
       // Update
-      const index = books.findIndex(b => b.id === body.id);
-      if (index !== -1) {
-        books[index] = { ...books[index], ...body };
-      }
+      const updatedBook = await prisma.book.update({
+        where: { id },
+        data: {
+          title,
+          description,
+          price,
+          checkoutUrl,
+          category,
+          slug,
+          isFeatured,
+          images: {
+            deleteMany: {},
+            create: imageUrls && Array.isArray(imageUrls) 
+              ? imageUrls.map((url: string) => ({ url })) 
+              : []
+          }
+        }
+      });
+      return NextResponse.json({ success: true, book: updatedBook });
     } else {
       // Create
-      const newBook: Book = {
-        title: body.title,
-        description: body.description,
-        price: body.price,
-        imageUrl: body.imageUrl,
-        checkoutUrl: body.checkoutUrl,
-        category: body.category,
-        id: Date.now().toString(),
-        slug: body.title.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')
-      };
-      books.push(newBook);
+      const newBook = await prisma.book.create({
+        data: {
+          title,
+          description,
+          price,
+          checkoutUrl,
+          category,
+          slug,
+          isFeatured,
+          images: {
+            create: imageUrls && Array.isArray(imageUrls) 
+              ? imageUrls.map((url: string) => ({ url })) 
+              : []
+          }
+        }
+      });
+      return NextResponse.json({ success: true, book: newBook });
     }
-    
-    await saveBooks(books);
-    
-    // Revalidate public pages
-    revalidatePath('/');
-    revalidatePath('/livros');
-    if (body.slug) revalidatePath(`/livros/${body.slug}`);
-    
-    return NextResponse.json({ success: true });
   } catch (error) {
+    console.error('Save book error:', error);
     return NextResponse.json({ error: 'Failed to save book' }, { status: 500 });
   }
 }

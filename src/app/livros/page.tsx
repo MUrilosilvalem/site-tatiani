@@ -1,17 +1,18 @@
 import ProductGrid from "@/components/ProductGrid";
-import { Book } from "@/data/books";
+import { prisma } from "@/lib/prisma";
 import styles from "./livros.module.css";
-import fs from 'fs/promises';
-import path from 'path';
-
-async function getBooks(): Promise<Book[]> {
-  const filePath = path.join(process.cwd(), 'src/data/books.json');
-  const data = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(data);
-}
 
 export default async function LivrosPage() {
-  const books = await getBooks();
+  const books = await prisma.book.findMany({
+    include: { images: true },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  const formattedBooks = books.map(book => ({
+    ...book,
+    imageUrl: book.images[0]?.url || '',
+  }));
+
   return (
     <div className={`container ${styles.page}`}>
       <header className={styles.header}>
@@ -21,7 +22,7 @@ export default async function LivrosPage() {
         </p>
       </header>
       
-      <ProductGrid books={books} />
+      <ProductGrid books={formattedBooks} />
     </div>
   );
 }

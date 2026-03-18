@@ -24,8 +24,8 @@ export default function Header() {
 
         <nav className={`${styles.nav} ${isMenuOpen ? styles.navOpen : ''}`}>
           <Link href="/livros" onClick={() => setIsMenuOpen(false)}>Livros</Link>
+          <Link href="/blog" onClick={() => setIsMenuOpen(false)}>Blog</Link>
           <Link href="/sobre" onClick={() => setIsMenuOpen(false)}>Sobre</Link>
-          <Link href="/admin" className={styles.adminLink} onClick={() => setIsMenuOpen(false)}>Painel Admin</Link>
         </nav>
       </div>
     </header>

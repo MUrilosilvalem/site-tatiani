@@ -3,7 +3,8 @@ export interface Book {
   title: string;
   description: string;
   price: number;
-  imageUrl: string;
+  imageUrl?: string; // Primeira imagem (para listagem)
+  imageUrls?: string[]; // Todas as imagens (para carrossel)
   checkoutUrl: string;
   slug: string;
   category: string;

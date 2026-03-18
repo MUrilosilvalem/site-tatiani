@@ -1,43 +1,67 @@
 'use client';
 
 import { useState } from 'react';
+import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import styles from './login.module.css';
 
 export default function LoginPage() {
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Super simple auth: check against a hardcoded value or env var
-    // For this demo, let's use 'admin123'
-    if (password === 'admin123') {
-      // Definindo o cookie com expiração de 7 dias e SameSite=Lax para segurança
-      document.cookie = 'admin_auth=true; path=/; max-age=604800; SameSite=Lax';
-      router.push('/admin');
+    setLoading(true);
+    setError('');
+
+    const result = await signIn('credentials', {
+      email,
+      password,
+      redirect: false,
+    });
+
+    if (result?.error) {
+      setError('Credenciais inválidas. Tente novamente.');
+      setLoading(false);
     } else {
-      setError('Senha incorreta');
+      router.push('/admin');
+      router.refresh();
     }
   };
 
   return (
-    <div className={`container ${styles.page}`}>
-      <div className={styles.card}>
+    <div className={styles.loginContainer}>
+      <form onSubmit={handleSubmit} className={styles.loginForm}>
         <h1>Acesso Restrito</h1>
-        <form onSubmit={handleLogin} className={styles.form}>
+        {error && <p className={styles.error}>{error}</p>}
+        
+        <div className={styles.field}>
+          <label>E-mail</label>
+          <input 
+            type="email" 
+            value={email} 
+            onChange={(e) => setEmail(e.target.value)} 
+            required 
+          />
+        </div>
+        
+        <div className={styles.field}>
+          <label>Senha</label>
           <input 
             type="password" 
-            placeholder="Digite a senha" 
             value={password} 
-            onChange={(e) => setPassword(e.target.value)}
-            className={styles.input}
+            onChange={(e) => setPassword(e.target.value)} 
+            required 
           />
-          {error && <p className={styles.error}>{error}</p>}
-          <button type="submit" className={styles.btn}>Entrar</button>
-        </form>
-      </div>
+        </div>
+        
+        <button type="submit" disabled={loading} className={styles.loginBtn}>
+          {loading ? 'Entrando...' : 'Entrar'}
+        </button>
+      </form>
     </div>
   );
 }

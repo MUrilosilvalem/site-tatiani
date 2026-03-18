@@ -1,19 +1,31 @@
 import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
-import { Book } from "@/data/books";
+import { prisma } from "@/lib/prisma";
 import styles from "./page.module.css";
-import fs from 'fs/promises';
-import path from 'path';
 
-async function getBooks(): Promise<Book[]> {
-  const filePath = path.join(process.cwd(), 'src/data/books.json');
-  const data = await fs.readFile(filePath, 'utf-8');
-  return JSON.parse(data);
-}
+export const revalidate = 60;
 
 export default async function Home() {
-  const books = await getBooks();
-  const highlights = books.slice(0, 3); // Showing first 3 as highlights
+  // Busca todos os livros com suas imagens
+  const allBooks = await prisma.book.findMany({
+    include: { images: true },
+    orderBy: { createdAt: 'desc' }
+  });
+
+  // Formata os livros para o Cloudinary/Frontend (pega a primeira imagem como padrão)
+  const formattedBooks = allBooks.map(book => ({
+    ...book,
+    imageUrl: book.images[0]?.url || '',
+  }));
+
+  // Filtra destaques manuais
+  let highlights = formattedBooks.filter(book => book.isFeatured);
+
+  // Fallback: Se não houver destaques marcados, pega os 3 mais recentes
+  if (highlights.length === 0) {
+    highlights = formattedBooks.slice(0, 3);
+  }
+
   return (
     <>
       <Hero />
@@ -29,6 +41,7 @@ export default async function Home() {
       </section>
 
       <section className={styles.testimonials}>
+        {/* ... restante do componente ... */}
         <div className="container">
           <h2 className={styles.sectionTitle}>O que as <span>mães</span> dizem</h2>
           <p className={styles.sectionSubtitle}>
