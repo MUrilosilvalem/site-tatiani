@@ -222,13 +222,22 @@
   width: 100%;
 }
 
-.saveContentBtn {
-  align-self: flex-start;
-  margin-top: 0.5rem;
-  background: var(--color-pink-medium);
-  color: white;
-  padding: 0.5rem 1rem;
+.saveContentBtn:hover {
+  background: var(--color-pink-dark);
+}
+
+.previewImage {
+  width: 100px;
+  height: 60px;
+  object-fit: cover;
   border-radius: var(--radius-sm);
-  font-weight: 600;
-  font-size: 0.875rem;
+  margin-top: 5px;
+  border: 1px solid #e5e7eb;
+}
+
+.imageControl {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-top: 5px;
 }

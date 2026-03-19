@@ -345,8 +345,11 @@ function BlogManager() {
 }
 
 const DEFAULT_CONTENT = [
+  { key: 'site.logo.text', label: 'Site - Texto do Logo', type: 'text' },
+  { key: 'site.logo.image', label: 'Site - URL do Logo (Opcional)', type: 'image' },
   { key: 'home.hero.title', label: 'Home - Título Hero', type: 'text' },
   { key: 'home.hero.subtitle', label: 'Home - Subtítulo Hero', type: 'textarea' },
+  { key: 'home.hero.image', label: 'Home - Imagem Hero', type: 'image' },
   { key: 'home.about.title', label: 'Sobre - Título', type: 'text' },
   { key: 'home.about.text', label: 'Sobre - Texto', type: 'textarea' },
 ];
@@ -371,29 +374,71 @@ function ContentManager() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ key, value })
     });
-    if (res.ok) alert('Texto atualizado com sucesso!');
+    if (res.ok) {
+      alert('Contéudo atualizado com sucesso!');
+      fetchContent();
+    }
+  };
+
+  const handleFileUpload = async (key: string, file: File) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      setContents(prev => ({ ...prev, [key]: data.url }));
+      await handleSaveContent(key, data.url);
+    }
   };
 
   if (loading) return <div>Carregando conteúdos...</div>;
 
   return (
     <section className={styles.formSection}>
-      <h2>Editar Textos do Site</h2>
+      <h2>Editar Conteúdo do Site</h2>
       <div className={styles.contentList}>
         {DEFAULT_CONTENT.map(item => (
           <div key={item.key} className={styles.contentItem}>
             <label>{item.label}</label>
-            {item.type === 'text' ? (
+            {item.type === 'text' && (
               <input 
                 value={contents[item.key] || ''} 
                 onChange={(e) => setContents(prev => ({ ...prev, [item.key]: e.target.value }))}
               />
-            ) : (
+            )}
+            {item.type === 'textarea' && (
               <textarea 
                 rows={4}
                 value={contents[item.key] || ''} 
                 onChange={(e) => setContents(prev => ({ ...prev, [item.key]: e.target.value }))}
               />
+            )}
+            {item.type === 'image' && (
+              <div className={styles.imageControl}>
+                <input 
+                  type="text"
+                  placeholder="URL da imagem..."
+                  value={contents[item.key] || ''} 
+                  onChange={(e) => setContents(prev => ({ ...prev, [item.key]: e.target.value }))}
+                />
+                <input 
+                  type="file" 
+                  accept="image/*"
+                  className={styles.fileInput}
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) handleFileUpload(item.key, file);
+                  }}
+                />
+                {contents[item.key] && (
+                  <img src={contents[item.key]} alt="Preview" className={styles.previewImage} />
+                )}
+              </div>
             )}
             <button 
               className={styles.saveContentBtn}

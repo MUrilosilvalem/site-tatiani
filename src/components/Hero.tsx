@@ -13,6 +13,7 @@ export default async function Hero() {
 
   const title = getVal('home.hero.title', 'Conectando Mães ao Cuidado e ao Conhecimento');
   const subtitle = getVal('home.hero.subtitle', 'Explore nossa curadoria de livros e infoprodutos criados para acolher e guiar você em cada etapa da maternidade.');
+  const imageUrl = getVal('home.hero.image', 'https://images.unsplash.com/photo-1494451930944-8994a727b92d?q=80&w=800&auto=format&fit=crop');
 
   return (
     <section className={styles.hero}>
@@ -31,8 +32,8 @@ export default async function Hero() {
         </div>
         <div className={styles.imageWrapper}>
           <img 
-            src="https://images.unsplash.com/photo-1494451930944-8994a727b92d?q=80&w=800&auto=format&fit=crop" 
-            alt="Mãe lendo para filho" 
+            src={imageUrl} 
+            alt="Hero Image" 
             className={styles.image}
           />
         </div>
