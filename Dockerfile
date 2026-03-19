@@ -1,8 +1,8 @@
 FROM node:18-slim AS base
+RUN apt-get update && apt-get install -y openssl libssl3 ca-certificates libc6 && rm -rf /var/lib/apt/lists/*
 
 # Install dependencies only when needed
 FROM base AS deps
-RUN apt-get update && apt-get install -y openssl libssl-dev libc6
 WORKDIR /app
 
 # Install dependencies based on the preferred package manager
@@ -32,7 +32,6 @@ ENV NODE_ENV production
 
 ENV HOSTNAME "0.0.0.0"
 
-RUN apt-get update && apt-get install -y openssl && rm -rf /var/lib/apt/lists/*
 RUN groupadd --system --gid 1001 nodejs
 RUN useradd --system --uid 1001 nextjs
 
