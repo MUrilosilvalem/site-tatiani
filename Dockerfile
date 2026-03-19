@@ -1,5 +1,4 @@
-FROM node:18-slim AS base
-RUN apt-get update && apt-get install -y openssl libssl3 ca-certificates libc6 && rm -rf /var/lib/apt/lists/*
+FROM node:18 AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -15,12 +14,18 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
+# Explicitly declare build args so they are available if needed
+ARG DATABASE_URL
+ARG NEXTAUTH_SECRET
+ARG NEXTAUTH_URL
+
 ENV NEXT_TELEMETRY_DISABLED 1
 ENV NODE_OPTIONS="--max-old-space-size=4096"
-ENV DATABASE_URL="postgresql://postgres:postgres@localhost:5432/postgres"
+# Use a dummy DATABASE_URL during build unless provided
+ENV DATABASE_URL=${DATABASE_URL:-"postgresql://postgres:postgres@localhost:5432/postgres"}
 
 RUN npx prisma generate
-RUN npm run build
+RUN DEBUG=next:* npm run build
 
 # Production image, copy all the files and run next
 FROM base AS runner
