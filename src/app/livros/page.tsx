@@ -2,6 +2,8 @@ import ProductGrid from "@/components/ProductGrid";
 import { prisma } from "@/lib/prisma";
 import styles from "./livros.module.css";
 
+export const dynamic = "force-dynamic";
+
 export default async function LivrosPage() {
   const books = await prisma.book.findMany({
     include: { images: true },

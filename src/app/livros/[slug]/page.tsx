@@ -4,6 +4,8 @@ import styles from "./pdp.module.css";
 import Link from "next/link";
 import Carousel from "@/components/Carousel";
 
+export const dynamic = "force-dynamic";
+
 interface PDPProps {
   params: { slug: string };
 }

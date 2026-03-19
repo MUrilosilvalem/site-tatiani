@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import styles from './blog.module.css';
 
+export const dynamic = "force-dynamic";
 export const revalidate = 60; // revalidate every minute
 
 export default async function BlogPage() {
