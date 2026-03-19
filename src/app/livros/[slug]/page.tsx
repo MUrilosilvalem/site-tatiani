@@ -5,11 +5,11 @@ import Link from "next/link";
 import Carousel from "@/components/Carousel";
 
 interface PDPProps {
-  params: Promise<{ slug: string }>;
+  params: { slug: string };
 }
 
 export default async function ProductPage({ params }: PDPProps) {
-  const { slug } = await params;
+  const { slug } = params;
   
   const book = await prisma.book.findUnique({
     where: { slug },
